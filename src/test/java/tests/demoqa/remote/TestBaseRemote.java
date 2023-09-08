@@ -1,7 +1,8 @@
-package tests.demoqa;
+package tests.demoqa.remote;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
@@ -9,11 +10,18 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class TestBase {
+
+public class TestBaseRemote {
+
+    RegistrationPage registrationPage = new RegistrationPage();
+//    TextBoxPage textBoxPage = new TextBoxPage();
+    TestData data = new TestData();
 
     @BeforeAll
     static void beforeAll() {
         Configuration.baseUrl = "https://demoqa.com";
+//        Configuration.browser = "chrome";
+//        Configuration.browserVersion = "100.0";
         Configuration.browserSize = "1920x1080";
         Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
 
@@ -24,15 +32,17 @@ public class TestBase {
     }
 
     @BeforeEach
-    void addListener() {
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+     void beforeEach() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
-//    @AfterEach
-//    void addAttachments() {
-//        Attach.screenshotAs("Last screenshot");
-//        Attach.pageSource();
-//        Attach.browserConsoleLogs();
-//        Attach.addVideo();
-//    }
+    @AfterEach
+    void addAttachments() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
+    }
 }
+
+
